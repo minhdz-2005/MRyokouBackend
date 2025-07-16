@@ -5,10 +5,31 @@ exports.getAllTours = async (req, res) => {
   try {
     const page  = parseInt(req.query.page)  || 1;
     const limit = parseInt(req.query.limit) || 8;
-    const sort  = req.query.sort || '';          // nhận sort từ query
+    const sort  = req.query.sort || '';
+    const keyword = req.query.keyword || '';         // Từ khóa
+    const location = req.query.location || '';       // Địa điểm
+    const priceRange = req.query.price || '';        // Mức giá
+
     const skip  = (page - 1) * limit;
 
-    /* Ánh xạ sort → cú pháp Mongoose */
+    // ───── Build query động ─────
+    let query = {};
+
+    if (keyword) {
+      query.title = { $regex: keyword, $options: 'i' };
+    }
+
+    if (location) {
+      query.location = { $regex: location, $options: 'i' };
+    }
+
+    if (priceRange) {
+      if (priceRange === 'low') query.price = { $lt: 3000000 };
+      else if (priceRange === 'mid') query.price = { $gte: 3000000, $lte: 5000000 };
+      else if (priceRange === 'high') query.price = { $gt: 5000000 };
+    }
+
+    // ───── Sort option ─────
     let sortOption = {};
     switch (sort) {
       case 'price-asc':
@@ -23,13 +44,11 @@ exports.getAllTours = async (req, res) => {
       case 'newest':
         sortOption.createdAt = -1;
         break;
-      default:
-        sortOption = {};
     }
 
     const [tours, total] = await Promise.all([
-      Tour.find().sort(sortOption).skip(skip).limit(limit),
-      Tour.countDocuments(),
+      Tour.find(query).sort(sortOption).skip(skip).limit(limit),
+      Tour.countDocuments(query),
     ]);
 
     res.json({
