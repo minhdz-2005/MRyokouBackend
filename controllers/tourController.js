@@ -1,0 +1,95 @@
+const Tour = require('../models/Tour');
+
+/* ───────────── GET /api/tours?page=1&limit=8&sort=price-asc ───────────── */
+exports.getAllTours = async (req, res) => {
+  try {
+    const page  = parseInt(req.query.page)  || 1;
+    const limit = parseInt(req.query.limit) || 8;
+    const sort  = req.query.sort || '';          // nhận sort từ query
+    const skip  = (page - 1) * limit;
+
+    /* Ánh xạ sort → cú pháp Mongoose */
+    let sortOption = {};
+    switch (sort) {
+      case 'price-asc':
+        sortOption.price = 1;
+        break;
+      case 'price-desc':
+        sortOption.price = -1;
+        break;
+      case 'rating':
+        sortOption.rating = -1;
+        break;
+      case 'newest':
+        sortOption.createdAt = -1;
+        break;
+      default:
+        sortOption = {};
+    }
+
+    const [tours, total] = await Promise.all([
+      Tour.find().sort(sortOption).skip(skip).limit(limit),
+      Tour.countDocuments(),
+    ]);
+
+    res.json({
+      page,
+      totalPages: Math.ceil(total / limit),
+      total,
+      data: tours,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Lỗi server' });
+  }
+};
+
+/* ───────────── GET /api/tours/:id ───────────── */
+exports.getTour = async (req, res) => {
+  try {
+    const tour = await Tour.findById(req.params.id);
+    if (!tour) return res.status(404).json({ message: 'Không tìm thấy tour' });
+    res.json(tour);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Lỗi server' });
+  }
+};
+
+/* ───────────── POST /api/tours ───────────── */
+exports.createTour = async (req, res) => {
+  try {
+    const newTour = await Tour.create(req.body);
+    res.status(201).json(newTour);
+  } catch (err) {
+    console.error(err);
+    res.status(400).json({ message: 'Dữ liệu tour không hợp lệ' });
+  }
+};
+
+/* ───────────── PUT /api/tours/:id ───────────── */
+exports.updateTour = async (req, res) => {
+  try {
+    const tour = await Tour.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+      runValidators: true,
+    });
+    if (!tour) return res.status(404).json({ message: 'Không tìm thấy tour' });
+    res.json(tour);
+  } catch (err) {
+    console.error(err);
+    res.status(400).json({ message: 'Cập nhật thất bại' });
+  }
+};
+
+/* ───────────── DELETE /api/tours/:id ───────────── */
+exports.deleteTour = async (req, res) => {
+  try {
+    const tour = await Tour.findByIdAndDelete(req.params.id);
+    if (!tour) return res.status(404).json({ message: 'Không tìm thấy tour' });
+    res.json({ message: 'Đã xoá tour' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Xoá thất bại' });
+  }
+};
