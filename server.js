@@ -6,6 +6,7 @@ const dotenv = require('dotenv');
 const authRoutes = require('./routes/authRoutes');
 const tourRoutes = require('./routes/tourRoutes');
 const exploreRoutes = require('./routes/exploreRoutes');
+const bookingRoutes = require('./routes/bookingRoutes.js');
 
 const swaggerUi = require('swagger-ui-express');
 const swaggerSpec = require('./swagger');
@@ -22,6 +23,7 @@ app.use(express.json());
 app.use('/api/auth', authRoutes);
 app.use('/api/explore', exploreRoutes);
 app.use('/api/tours', tourRoutes);
+app.use('/api/bookings', bookingRoutes);
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
