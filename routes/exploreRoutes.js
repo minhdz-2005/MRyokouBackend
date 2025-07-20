@@ -1,40 +1,120 @@
 const express = require('express');
 const router = express.Router();
-const { getDestinations } = require('../controllers/exploreController');
+const {
+    createExplore,
+    getAllExplores,
+    getByRegion,
+    updateExplore,
+    deleteExplore,
+
+} = require('../controllers/exploreController');
 
 /**
  * @swagger
  * tags:
  *   name: Explore
- *   description: Khám phá tour theo địa điểm, mùa...
-
+ *   description: Explore VietNam
+ */
+/**
  * @swagger
- * /api/explore/destinations:
+ * /api/explore:
  *   get:
- *     summary: Lấy danh sách địa điểm du lịch từ dữ liệu tour
+ *     summary: Get All Explore
  *     tags: [Explore]
+ *     response:
+ *       200:
+ *         description: All Explore Locations
+ */
+router.get('/', getAllExplores);
+
+/**
+ * @swagger
+ * /api/explore/region/{region}:
+ *   get:
+ *     summary: Get Explore by region
+ *     tags: [Explore]
+ *     parameters:
+ *       - in: path
+ *         name: ExploreRegion
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Explore region
  *     responses:
  *       200:
- *         description: Danh sách địa điểm thành công
- *         content:
- *           application/json:
- *             schema:
- *               type: array
- *               items:
- *                 type: object
- *                 properties:
- *                   name:
- *                     type: string
- *                     example: Đà Lạt
- *                   image:
- *                     type: string
- *                     example: https://source.unsplash.com/600x400/?dalat,vietnam
- *                   totalTours:
- *                     type: integer
- *                     example: 5
- *       500:
- *         description: Lỗi server khi lấy địa điểm
+ *         description: explore
+ *       404:
+ *         description: not found
  */
-router.get('/destinations', getDestinations);
+router.get('/:region', getByRegion);
+
+/**
+ * @swagger
+ * /api/explore:
+ *   post:
+ *     summary: Create explore
+ *     tags: [Explore]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Explore'
+ *     responses:
+ *       201:
+ *         description: Create ok
+ *       400:
+ *         description: Failed
+ */
+router.route('/').post(createExplore);
+
+/**
+ * @swagger
+ * /api/explore/{id}:
+ *   put:
+ *     summary: update explore
+ *     tags: [Explore]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ID of explore
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *     responses:
+ *       200:
+ *         description: put OK
+ *       404: 
+ *         description: put falied
+ */
+router.put('/', updateExplore)
+
+/**
+ * @swagger
+ * /api/explore/{id}:
+ *   delete: 
+ *     summary: delete explore
+ *     tags: [Explore]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ID cua explore
+ *     responses:
+ *       200:
+ *         description: del ok
+ *       404: 
+ *         description: del failed
+ */
+
+router.delete('/', deleteExplore)
 
 module.exports = router;
