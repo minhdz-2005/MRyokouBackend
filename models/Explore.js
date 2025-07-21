@@ -18,7 +18,6 @@ const ExploreSchema = new mongoose.Schema(
         },
         fullDesc: [{ type: String}],
         image: [{ type: String}],
-
     }
 );
 

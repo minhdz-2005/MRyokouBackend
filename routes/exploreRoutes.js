@@ -59,14 +59,29 @@ router.get('/:region', getByRegion);
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/Explore'
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *               location:
+ *                 type: string
+ *               region:
+ *                 type: string
+ *               fullDesc:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *               image:
+ *                 type: array
+ *                 items:
+ *                   type: string
  *     responses:
  *       201:
  *         description: Create ok
  *       400:
  *         description: Failed
  */
-router.route('/').post(createExplore);
+router.post('/', createExplore);
 
 /**
  * @swagger
