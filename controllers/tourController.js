@@ -1,4 +1,5 @@
 const Tour = require('../models/Tour');
+const TourDetail = require('../models/TourDetail');
 
 /* ───────────── GET /api/tours?page=1&limit=8&sort=price-asc ───────────── */
 exports.getAllTours = async (req, res) => {
@@ -9,6 +10,7 @@ exports.getAllTours = async (req, res) => {
     const keyword = req.query.keyword || '';         // Từ khóa
     const location = req.query.location || '';       // Địa điểm
     const priceRange = req.query.price || '';        // Mức giá
+    const durationRange = req.query.duration || '';
 
     const skip  = (page - 1) * limit;
 
@@ -27,7 +29,17 @@ exports.getAllTours = async (req, res) => {
       if (priceRange === 'low') query.price = { $lt: 3000000 };
       else if (priceRange === 'mid') query.price = { $gte: 3000000, $lte: 5000000 };
       else if (priceRange === 'high') query.price = { $gt: 5000000 };
+      else if (priceRange === 'luxury') query.price = { $gt: 10000000 };
     }
+
+    if (durationRange) {
+      if (durationRange === '1-3') query.duration = { $gte: 1, $lte: 3 };
+      if (durationRange === '4-7') query.duration = { $gte: 4, $lte: 7 };
+      if (durationRange === '8+') query.duration = { $gt: 8 };
+    }
+
+    // Tìm theo ngày đi
+
 
     // ───── Sort option ─────
     let sortOption = {};
