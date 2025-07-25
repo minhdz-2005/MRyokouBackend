@@ -5,7 +5,7 @@ const TourDetail = require('../models/TourDetail');
 exports.getAllTours = async (req, res) => {
   try {
     const page  = parseInt(req.query.page)  || 1;
-    const limit = parseInt(req.query.limit) || 8;
+    const limit = parseInt(req.query.limit) || 6;
     const sort  = req.query.sort || '';
     const keyword = req.query.keyword || '';         // Từ khóa
     const location = req.query.location || '';       // Địa điểm
