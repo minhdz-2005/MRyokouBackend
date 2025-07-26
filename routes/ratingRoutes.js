@@ -77,6 +77,49 @@ router.get('/:id', ratingController.getRatingById);
 
 /**
  * @swagger
+ * /api/ratings/user/{userId}:
+ *   get:
+ *     summary: Lấy danh sách đánh giá theo userId
+ *     tags: [Ratings]
+ *     parameters:
+ *       - in: path
+ *         name: userId
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: ID của người dùng (Account)
+ *     responses:
+ *       200:
+ *         description: Trả về danh sách đánh giá của người dùng
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   _id:
+ *                     type: string
+ *                   tour:
+ *                     $ref: '#/components/schemas/Booking'
+ *                   user:
+ *                     $ref: '#/components/schemas/Account'
+ *                   star:
+ *                     type: number
+ *                   tourRate:
+ *                     type: string
+ *                   serviceRate:
+ *                     type: string
+ *       404:
+ *         description: Không tìm thấy đánh giá cho userId này
+ *       500:
+ *         description: Lỗi server
+ */
+// Route: Lấy rating theo user ID
+router.get('/user/:userId', ratingController.getRatingsByUserId);
+
+/**
+ * @swagger
  * /api/ratings/{id}:
  *   put:
  *     summary: Cập nhật đánh giá

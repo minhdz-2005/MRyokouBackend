@@ -1,89 +1,169 @@
 const express = require('express');
 const router = express.Router();
-const { createBooking } = require('../controllers/bookingController');
-
-/**
- * @swagger
- * components:
- *   schemas:
- *     Booking:
- *       type: object
- *       required:
- *         - tour
- *         - fullName
- *         - email
- *         - phone
- *         - departureDate
- *         - adults
- *       properties:
- *         _id:
- *           type: string
- *           description: MongoDB ObjectId
- *         tour:
- *           type: string
- *           description: ID của tour
- *         fullName:
- *           type: string
- *           example: Nguyễn Văn A
- *         email:
- *           type: string
- *           example: example@email.com
- *         phone:
- *           type: string
- *           example: 0901234567
- *         departureDate:
- *           type: string
- *           format: date
- *           example: 2025-08-01
- *         adults:
- *           type: number
- *           example: 2
- *         children:
- *           type: number
- *           example: 1
- *         note:
- *           type: string
- *           example: Yêu cầu thêm xe đưa đón
- *       example:
- *         tour: 64f124c1ee6cda1234567890
- *         fullName: Nguyễn Văn A
- *         email: example@email.com
- *         phone: 0901234567
- *         departureDate: 2025-08-01
- *         adults: 2
- *         children: 1
- *         note: Yêu cầu thêm xe đưa đón
- */
+const bookingController = require('../controllers/bookingController');
 
 /**
  * @swagger
  * tags:
  *   name: Bookings
- *   description: API đặt tour
+ *   description: Booking management
  */
 
 /**
  * @swagger
  * /api/bookings:
  *   post:
- *     summary: Đặt tour mới
+ *     summary: Create a new booking
  *     tags: [Bookings]
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/Booking'
+ *             type: object
+ *             properties:
+ *               tour:
+ *                 type: string
+ *               userId:
+ *                 type: string
+ *               fullName:
+ *                 type: string
+ *               email:
+ *                 type: string
+ *               phone:
+ *                 type: string
+ *               departureDate:
+ *                 type: string
+ *                 format: date
+ *               adults:
+ *                 type: integer
+ *               children:
+ *                 type: integer
+ *               totalPrice:
+ *                 type: number
+ *               note:
+ *                 type: string
  *     responses:
  *       201:
- *         description: Đặt tour thành công
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Booking'
- *       400:
- *         description: Dữ liệu không hợp lệ
+ *         description: Booking created successfully
  */
-router.post('/', createBooking);
+router.post('/', bookingController.createBooking);
+
+/**
+ * @swagger
+ * /api/bookings:
+ *   get:
+ *     summary: Get all bookings
+ *     tags: [Bookings]
+ *     responses:
+ *       200:
+ *         description: A list of bookings
+ */
+router.get('/', bookingController.getAllBookings);
+
+/**
+ * @swagger
+ * /api/bookings/{id}:
+ *   get:
+ *     summary: Get booking by ID
+ *     tags: [Bookings]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Booking found
+ *       404:
+ *         description: Booking not found
+ */
+router.get('/:id', bookingController.getBookingById);
+
+/**
+ * @swagger
+ * /api/bookings/{id}:
+ *   put:
+ *     summary: Update booking
+ *     tags: [Bookings]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             example:
+ *               fullName: John Updated
+ *               phone: "0999999999"
+ *     responses:
+ *       200:
+ *         description: Booking updated
+ *       404:
+ *         description: Booking not found
+ */
+router.put('/:id', bookingController.updateBooking);
+
+/**
+ * @swagger
+ * /api/bookings/{id}:
+ *   delete:
+ *     summary: Delete booking
+ *     tags: [Bookings]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Booking deleted
+ *       404:
+ *         description: Booking not found
+ */
+router.delete('/:id', bookingController.deleteBooking);
+
+/**
+ * @swagger
+ * /api/bookings/tour/{tourId}:
+ *   get:
+ *     summary: Get bookings by tour ID
+ *     tags: [Bookings]
+ *     parameters:
+ *       - in: path
+ *         name: tourId
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: List of bookings for a specific tour
+ */
+router.get('/tour/:tourId', bookingController.getBookingsByTourId);
+
+/**
+ * @swagger
+ * /api/bookings/user/{userId}:
+ *   get:
+ *     summary: Get bookings by user ID
+ *     tags: [Bookings]
+ *     parameters:
+ *       - in: path
+ *         name: userId
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: List of bookings for a specific user
+ */
+router.get('/user/:userId', bookingController.getBookingsByUserId);
 
 module.exports = router;

@@ -36,6 +36,24 @@ exports.getRatingById = async (req, res) => {
     }
 };
 
+// Lấy tất cả rating theo user ID
+exports.getRatingsByUserId = async (req, res) => {
+    try {
+        const ratings = await Rating.find({ user: req.params.userId })
+            .populate('tour')         // populate Booking info
+            .populate('user');        // populate Account info (nếu cần)
+
+        if (!ratings || ratings.length === 0) {
+            return res.status(404).json({ message: 'No ratings found for this user' });
+        }
+
+        res.status(200).json(ratings);
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+};
+
+
 // [UPDATE] Cập nhật đánh giá
 exports.updateRating = async (req, res) => {
     try {

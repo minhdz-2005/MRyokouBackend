@@ -6,6 +6,11 @@ const bookingSchema = new mongoose.Schema({
     ref: 'Tour',
     required: true,
   },
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    require: true,
+  },
   fullName: {
     type: String,
     required: true,
@@ -30,6 +35,10 @@ const bookingSchema = new mongoose.Schema({
   children: {
     type: Number,
     default: 0,
+  },
+  totalPrice: {
+    type: Number,
+    require: true,
   },
   note: {
     type: String,
