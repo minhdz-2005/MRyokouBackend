@@ -10,6 +10,7 @@ const tourDetailRoutes = require('./routes/tourDetailRoutes.js');
 const exploreRoutes = require('./routes/exploreRoutes.js');
 const accountRoutes = require('./routes/accountRoutes.js');
 const ratingRoutes = require('./routes/ratingRoutes.js');
+const userRoutes = require('./routes/userRoutes.js');
 
 const swaggerUi = require('swagger-ui-express');
 const swaggerSpec = require('./swagger');
@@ -30,6 +31,7 @@ app.use('/api/tour-details', tourDetailRoutes);
 app.use('/api/explore', exploreRoutes);
 app.use('/api/accounts', accountRoutes);
 app.use('/api/ratings', ratingRoutes);
+app.use('/api/users', userRoutes);
 
 app.use('/uploads', express.static('uploads'));
 

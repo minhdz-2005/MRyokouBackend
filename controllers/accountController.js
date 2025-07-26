@@ -41,6 +41,20 @@ exports.getAccountById = async (req, res) => {
     }
 };
 
+// [READ ONE] Lấy account theo userID (thay vì _id của account)
+exports.getAccountByUserID = async (req, res) => {
+    try {
+        const account = await Account.findOne({ userID: req.params.userID })
+            .populate('userID')
+            .populate('rating');
+        if (!account) return res.status(404).json({ message: 'Account not found by userID' });
+        res.status(200).json(account);
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+};
+
+
 // UPDATE account kèm avatar mới (nếu có)
 exports.updateAccount = async (req, res) => {
     try {

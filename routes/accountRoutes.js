@@ -62,6 +62,28 @@ router.get('/', accountController.getAllAccounts);
 
 /**
  * @swagger
+ * /api/accounts/by-user/{userID}:
+ *   get:
+ *     summary: Lấy account theo userID
+ *     tags: [Accounts]
+ *     parameters:
+ *       - in: path
+ *         name: userID
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: ID của user (trong collection User)
+ *     responses:
+ *       200:
+ *         description: Thông tin account theo userID
+ *       404:
+ *         description: Không tìm thấy account
+ */
+router.get('/by-user/:userID', accountController.getAccountByUserID);
+
+
+/**
+ * @swagger
  * /api/accounts/{id}:
  *   get:
  *     summary: Lấy thông tin một account theo ID
