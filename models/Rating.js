@@ -2,14 +2,14 @@ const mongoose = require('mongoose');
 
 const ratingSchema = new mongoose.Schema(
     {
-        tour: {
+        booking: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Booking',
             require: true,
         },
         user: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'Account',
+            ref: 'User',
             require: true,
         },
         star: {

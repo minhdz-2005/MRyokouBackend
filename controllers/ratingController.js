@@ -15,7 +15,7 @@ exports.createRating = async (req, res) => {
 exports.getAllRatings = async (req, res) => {
     try {
         const ratings = await Rating.find()
-            .populate('tour')
+            .populate('booking')
             .populate('user');
         res.status(200).json(ratings);
     } catch (err) {
@@ -27,7 +27,7 @@ exports.getAllRatings = async (req, res) => {
 exports.getRatingById = async (req, res) => {
     try {
         const rating = await Rating.findById(req.params.id)
-            .populate('tour')
+            .populate('booking')
             .populate('user');
         if (!rating) return res.status(404).json({ message: 'Rating not found' });
         res.status(200).json(rating);
@@ -40,7 +40,24 @@ exports.getRatingById = async (req, res) => {
 exports.getRatingsByUserId = async (req, res) => {
     try {
         const ratings = await Rating.find({ user: req.params.userId })
-            .populate('tour')         // populate Booking info
+            .populate('booking')         // populate Booking info
+            .populate('user');        // populate Account info (nếu cần)
+
+        if (!ratings || ratings.length === 0) {
+            return res.status(404).json({ message: 'No ratings found for this user' });
+        }
+
+        res.status(200).json(ratings);
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+};
+
+// Lấy tất cả rating theo booking ID
+exports.getRatingsByBookingId = async (req, res) => {
+    try {
+        const ratings = await Rating.find({ booking: req.params.bookingId })
+            .populate('booking')         // populate Booking info
             .populate('user');        // populate Account info (nếu cần)
 
         if (!ratings || ratings.length === 0) {

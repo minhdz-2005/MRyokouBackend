@@ -9,7 +9,6 @@ const bookingSchema = new mongoose.Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
-    require: true,
   },
   fullName: {
     type: String,

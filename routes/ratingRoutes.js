@@ -22,9 +22,9 @@ const ratingController = require('../controllers/ratingController');
  *           schema:
  *             type: object
  *             properties:
- *               tour:
+ *               booking:
  *                 type: string
- *                 description: ID tour (Booking)
+ *                 description: ID booking (Booking)
  *               user:
  *                 type: string
  *                 description: ID người dùng (Account)
@@ -100,7 +100,7 @@ router.get('/:id', ratingController.getRatingById);
  *                 properties:
  *                   _id:
  *                     type: string
- *                   tour:
+ *                   booking:
  *                     $ref: '#/components/schemas/Booking'
  *                   user:
  *                     $ref: '#/components/schemas/Account'
@@ -117,6 +117,47 @@ router.get('/:id', ratingController.getRatingById);
  */
 // Route: Lấy rating theo user ID
 router.get('/user/:userId', ratingController.getRatingsByUserId);
+
+/**
+ * @swagger
+ * /api/ratings/booking/{bookingId}:
+ *   get:
+ *     summary: Lấy đánh giá theo bookingId
+ *     tags: [Ratings]
+ *     parameters:
+ *       - in: path
+ *         name: bookingId
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: ID của booking
+ *     responses:
+ *       200:
+ *         description: Trả về danh gia theo booking id
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 _id:
+ *                   type: string
+ *                 booking:
+ *                   $ref: '#/components/schemas/Booking'
+ *                 user:
+ *                   $ref: '#/components/schemas/Account'
+ *                 star:
+ *                   type: number
+ *                 tourRate:
+ *                   type: string
+ *                 serviceRate:
+ *                   type: string
+ *       404:
+ *         description: Không tìm thấy đánh giá cho bookingId này
+ *       500:
+ *         description: Lỗi server
+ */
+// Route: Lấy rating theo user ID
+router.get('/booking/:bookingId', ratingController.getRatingsByBookingId);
 
 /**
  * @swagger
