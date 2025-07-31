@@ -19,10 +19,6 @@ const accountSchema = new mongoose.Schema (
         phoneNumber: {
             type: String,
         },
-        rating: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Rating',
-        }
     }
 );
 

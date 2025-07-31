@@ -34,6 +34,8 @@ const userController = require('../controllers/userController');
  *               password:
  *                 type: string
  *                 format: password
+ *               role:
+ *                 type: string
  *     responses:
  *       201:
  *         description: Tạo user thành công
@@ -121,6 +123,8 @@ router.get('/:id', userController.getUserById);
  *               email:
  *                 type: string
  *               password:
+ *                 type: string
+ *               role::
  *                 type: string
  *     responses:
  *       200:

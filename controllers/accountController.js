@@ -20,8 +20,7 @@ exports.createAccount = async (req, res) => {
 exports.getAllAccounts = async (req, res) => {
     try {
         const accounts = await Account.find()
-            .populate('userID')
-            .populate('rating');
+            .populate('userID');
         res.status(200).json(accounts);
     } catch (err) {
         res.status(500).json({ message: err.message });
@@ -32,8 +31,7 @@ exports.getAllAccounts = async (req, res) => {
 exports.getAccountById = async (req, res) => {
     try {
         const account = await Account.findById(req.params.id)
-            .populate('userID')
-            .populate('rating');
+            .populate('userID');
         if (!account) return res.status(404).json({ message: 'Account not found' });
         res.status(200).json(account);
     } catch (err) {
@@ -45,8 +43,7 @@ exports.getAccountById = async (req, res) => {
 exports.getAccountByUserID = async (req, res) => {
     try {
         const account = await Account.findOne({ userID: req.params.userID })
-            .populate('userID')
-            .populate('rating');
+            .populate('userID');
         if (!account) return res.status(404).json({ message: 'Account not found by userID' });
         res.status(200).json(account);
     } catch (err) {

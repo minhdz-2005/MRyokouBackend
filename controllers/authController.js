@@ -3,14 +3,14 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 exports.register = async (req, res) => {
-  const { fullname, email, password } = req.body;
+  const { fullname, email, password, role } = req.body;
   try {
     const userExists = await User.findOne({ email });
     if (userExists) return res.status(400).json({ message: 'Email đã tồn tại' });
 
     const hashed = await bcrypt.hash(password, 10);
 
-    const newUser = await User.create({ fullname, email, password: hashed });
+    const newUser = await User.create({ fullname, email, password: hashed, role });
 
     res.status(201).json({ message: 'Đăng ký thành công', user: newUser });
   } catch (err) {
@@ -33,7 +33,7 @@ exports.login = async (req, res) => {
     res.json({
       message: 'Đăng nhập thành công',
       token,
-      user: { id: user._id, fullname: user.fullname, email: user.email }
+      user: { id: user._id, fullname: user.fullname, email: user.email, role: user.role }
     });
   } catch (err) {
     res.status(500).json({ message: 'Lỗi server' });

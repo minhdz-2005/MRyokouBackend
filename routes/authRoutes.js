@@ -27,6 +27,8 @@ module.exports = router;
  *                 type: string
  *               password:
  *                 type: string
+ *               role:
+ *                 type: string
  *     responses:
  *       201:
  *         description: Đăng ký thành công

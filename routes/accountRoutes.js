@@ -38,8 +38,6 @@ const upload = require('../middlewares/upload');
  *                 type: string
  *               phoneNumber:
  *                 type: string
- *               rating:
- *                 type: string
  *     responses:
  *       201:
  *         description: Tạo account thành công
@@ -131,8 +129,6 @@ router.get('/:id', accountController.getAccountById);
  *               country:
  *                 type: string
  *               phoneNumber:
- *                 type: string
- *               rating:
  *                 type: string
  *     responses:
  *       200:
