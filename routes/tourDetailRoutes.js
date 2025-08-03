@@ -92,8 +92,6 @@ router.get('/:tourId', getTourDetailByTourId);
  *                       format: date
  *                     status:
  *                       type: string
- *                     price:
- *                       type: number
  *               notes:
  *                 type: array
  *                 items:

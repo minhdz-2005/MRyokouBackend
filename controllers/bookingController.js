@@ -24,7 +24,9 @@ exports.getAllBookings = async (req, res) => {
 // [READ ONE BY ID]
 exports.getBookingById = async (req, res) => {
   try {
-    const booking = await Booking.findById(req.params.id);
+    const booking = await Booking.findById(req.params.id)
+      .populate ('tour')
+      .populate ('user');
     if (!booking) return res.status(404).json({ message: 'Booking not found' });
     res.status(200).json(booking);
   } catch (err) {

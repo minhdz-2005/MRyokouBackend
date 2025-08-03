@@ -21,7 +21,7 @@ const {
  *   get:
  *     summary: Get All Explore
  *     tags: [Explore]
- *     response:
+ *     responses:
  *       200:
  *         description: All Explore Locations
  */
@@ -108,7 +108,7 @@ router.post('/', createExplore);
  *       404: 
  *         description: put falied
  */
-router.put('/', updateExplore)
+router.put('/:id', updateExplore)
 
 /**
  * @swagger
@@ -130,6 +130,6 @@ router.put('/', updateExplore)
  *         description: del failed
  */
 
-router.delete('/', deleteExplore)
+router.delete('/:id', deleteExplore)
 
 module.exports = router;

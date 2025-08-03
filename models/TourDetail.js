@@ -9,7 +9,6 @@ const tourDetailSchema = new mongoose.Schema({
       startDate: { type: Date, required: true },
       endDate: { type: Date, required: true },
       status: { type: String, enum: ['Còn chỗ', 'Hết chỗ', 'Sắp khởi hành'], default: 'Còn chỗ' },
-      price: { type: Number, required: true },
     },
   ],
   notes: [{ type: String }],

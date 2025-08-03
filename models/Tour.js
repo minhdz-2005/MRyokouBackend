@@ -22,7 +22,7 @@ const TourSchema = new mongoose.Schema(
       min: 0,
     },
     duration: {
-      type: String, // ví dụ: "3 ngày 2 đêm"
+      type: String,
       required: true,
     },
     image: {

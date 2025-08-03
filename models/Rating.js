@@ -26,6 +26,8 @@ const ratingSchema = new mongoose.Schema(
             type: String,
             default: 'Perfect',
         },
+    }, {
+        timestamps: true,
     }
 );
 
